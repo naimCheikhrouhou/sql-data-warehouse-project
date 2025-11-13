@@ -3,6 +3,9 @@ optimaized version of the bronze load procédure :( source -> bronze layer )
 -better display with prints 
 -catching exceptions 
 -measuring time of load for each table and the full bronze load 
+-------------------------------------------------------------------main features
+- truncate and load the data in bronze tables(layer) refrech 
+-uses bulk insert to load the data 
 
 '''
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS
