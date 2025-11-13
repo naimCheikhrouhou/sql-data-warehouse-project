@@ -1,0 +1,52 @@
+TRUNCATE TABLE bronze.crm_cust_info ;  -- delet all data in the table 
+             -- this method is truncate and insert good for refreshing the table in case of any changes of the source 
+BULK INSERT bronze.crm_cust_info 
+FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_crm\cust_info.csv'
+WITH(
+FIRSTROW =2 ,
+FIELDTERMINATOR =',' ,
+tablock 
+);
+--------------------------- crm_prd_info ------------------------------------------------------
+TRUNCATE TABLE bronze.crm_prd_info ;
+BULK INSERT bronze.crm_prd_info 
+FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_crm\prd_info.csv'
+WITH(
+FIRSTROW =2 ,
+FIELDTERMINATOR =',' ,
+tablock 
+);
+---------------------------- crm_sales_details --------------------------------
+TRUNCATE TABLE bronze.crm_sales_details ;
+BULK INSERT bronze.crm_sales_details 
+FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_crm\sales_details.csv'
+WITH(
+FIRSTROW =2 ,
+FIELDTERMINATOR =',' ,
+tablock 
+);
+---------------------------- erp_cust_az12 --------------------------------
+TRUNCATE TABLE bronze.erp_cust_az12 ;
+BULK INSERT bronze.erp_cust_az12 
+FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_erp\cust_az12.csv'
+WITH(
+FIRSTROW =2 ,
+FIELDTERMINATOR =',' ,
+tablock 
+);---------------------------- erp_loc_a101 --------------------------
+TRUNCATE TABLE bronze.erp_loc_a101 ;
+BULK INSERT bronze.erp_loc_a101 
+FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_erp\loc_a101.csv'
+WITH(
+FIRSTROW =2 ,
+FIELDTERMINATOR =',' ,
+tablock 
+);---------------------------- erp_px_cat_g1v2 --------------------------------
+TRUNCATE TABLE bronze.erp_px_cat_g1v2;
+BULK INSERT bronze.erp_px_cat_g1v2 
+FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_erp\px_cat_g1v2.csv'
+WITH(
+FIRSTROW =2 ,
+FIELDTERMINATOR =',' ,
+tablock 
+);
