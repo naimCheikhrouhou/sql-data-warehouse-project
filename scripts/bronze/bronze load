@@ -1,0 +1,114 @@
+'''
+optimaized version of the bronze load procédure :
+-better display with prints 
+-catching exceptions 
+-measuring time of load for each table and the full bronze load 
+
+'''
+CREATE OR ALTER PROCEDURE bronze.load_bronze AS
+BEGIN 
+DECLARE @start_time DATETIME ,@end_time DATETIME,@start DATETIME ,@end DATETIME ; 
+   set @start = GETDATE();
+  BEGIN TRY 
+    print '==========================================================================';
+    print 'loading the data from sources ' ;
+    print '==========================================================================';
+    print 'loding crm source :' ; 
+    print '---------------------------------------------------------------------------';
+    print 'cust info :' ;
+        set @start_time = GETDATE();
+    TRUNCATE TABLE bronze.crm_cust_info ;  -- delet all data in the table 
+                 -- this method is truncate and insert good for refreshing the table in case of any changes of the source 
+    BULK INSERT bronze.crm_cust_info 
+    FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_crm\cust_info.csv'
+    WITH(
+    FIRSTROW =2 ,
+    FIELDTERMINATOR =',' ,
+    tablock 
+    );  set @end_time = GETDATE();
+    print'';
+    print 'load duration ' + cast(DATEDIFF(second,@start_time,@end_time ) AS NVARCHAR) +'seconds' ; 
+    print '------------------------------------------------------------------------------------------'
+    --------------------------- crm_prd_info ------------------------------------------------------
+    print 'prd_info :';
+        set @start_time = GETDATE();
+    TRUNCATE TABLE bronze.crm_prd_info ;
+    BULK INSERT bronze.crm_prd_info 
+    FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_crm\prd_info.csv'
+    WITH(
+    FIRSTROW =2 ,
+    FIELDTERMINATOR =',' ,
+    tablock 
+    );print'';
+        set @end_time = GETDATE();
+         print 'load duration ' + cast(DATEDIFF(second,@start_time,@end_time ) AS NVARCHAR) +'seconds' ; 
+ print '------------------------------------------------------------------------------------------'
+    ---------------------------- crm_sales_details ----------------------------------------------
+    print 'sales_details' ; 
+        set @start_time = GETDATE();
+    TRUNCATE TABLE bronze.crm_sales_details ;
+    BULK INSERT bronze.crm_sales_details 
+    FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_crm\sales_details.csv'
+    WITH(
+    FIRSTROW =2 ,
+    FIELDTERMINATOR =',' ,
+    tablock 
+    );set @end_time = GETDATE();
+    print '';
+     print 'load duration ' + cast(DATEDIFF(second,@start_time,@end_time ) AS NVARCHAR) +'seconds' ; 
+ print '------------------------------------------------------------------------------------------'
+    print'----------------------------------------------------------------------------------------';
+    print 'loading erp source ';
+    print '---------------------------------------------------------------------------------------';
+    ---------------------------- erp_cust_az12 ---------------------------------------------------
+    
+    print 'cust _az12 :' ;
+     set @start_time = GETDATE();
+    TRUNCATE TABLE bronze.erp_cust_az12 ;
+    BULK INSERT bronze.erp_cust_az12 
+    FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_erp\cust_az12.csv'
+    WITH(
+    FIRSTROW =2 ,
+    FIELDTERMINATOR =',' ,
+    tablock 
+    );print'';set @end_time = GETDATE();
+     print 'load duration ' + cast(DATEDIFF(second,@start_time,@end_time ) AS NVARCHAR) +'seconds' ; 
+ print '------------------------------------------------------------------------------------------'
+    ---------------------------- erp_loc_a101 --------------------------
+    print 'loc-a101 : ' ;
+        set @start_time = GETDATE();
+    TRUNCATE TABLE bronze.erp_loc_a101 ;
+    BULK INSERT bronze.erp_loc_a101 
+    FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_erp\loc_a101.csv'
+    WITH(
+    FIRSTROW =2 ,
+    FIELDTERMINATOR =',' ,
+    tablock 
+    );print '';set @end_time = GETDATE();
+     print 'load duration ' + cast(DATEDIFF(second,@start_time,@end_time ) AS NVARCHAR) +'seconds' ; 
+ print '------------------------------------------------------------------------------------------'
+    ---------------------------- erp_px_cat_g1v2 --------------------------------
+    print 'px_cat_g1v2 : ';
+     set @start_time = GETDATE();
+    TRUNCATE TABLE bronze.erp_px_cat_g1v2;
+    BULK INSERT bronze.erp_px_cat_g1v2 
+    FROM 'C:\Users\cheik\Desktop\i1\entropot de donné\projet\sql-data-warehouse-project-main\datasets\source_erp\px_cat_g1v2.csv'
+    WITH(
+    FIRSTROW =2 ,
+    FIELDTERMINATOR =',' ,
+    tablock 
+    );set @end_time = GETDATE();
+     print 'load duration ' + cast(DATEDIFF(second,@start_time,@end_time ) AS NVARCHAR) +'seconds' ; 
+ print '------------------------------------------------------------------------------------------'
+ set @end = GETDATE();
+  print 'full load duration ' + cast(DATEDIFF(second,@start,@end ) AS NVARCHAR) +'seconds' ; 
+ print '------------------------------------------------------------------------------------------'
+    print'========================================================================'
+  END TRY 
+  BEGIN CATCH 
+  PRINT '===================ERROR===============================================';
+  print 'ERROR OCCURED IN LOADING BRONZE LAYER '; 
+  print 'error message : '+ ERROR_MESSAGE() ; 
+  print '===================ERROR===============================================';
+  END CATCH 
+END 
