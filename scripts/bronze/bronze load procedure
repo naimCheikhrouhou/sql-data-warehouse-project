@@ -1,5 +1,5 @@
 '''
-optimaized version of the bronze load procédure :
+optimaized version of the bronze load procédure :( source -> bronze layer )
 -better display with prints 
 -catching exceptions 
 -measuring time of load for each table and the full bronze load 
