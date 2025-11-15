@@ -1,0 +1,5 @@
+1-analyse bronze tabels ( understand data , relationships ( key , foreing key ) 
+2- create exact same ddl tabes of bronze layer
+3- add meta data for easy maintenance
+_______________cleansing and transformation
+4-understand the quality issues of every table [ check duplicated or null  primary key |using sql quieries)
