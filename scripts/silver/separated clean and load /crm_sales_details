@@ -1,0 +1,18 @@
+________________________________________________________________________________________
+cleaning , transorming , loading data in silver.crm_sales_details 
+________________________________________________________________________________________
+1-normal stuff ( cheking unwanted spaces , if the foreing keys in the destination table , if there ay duplicates or nulls ) 
+#issue there are  colums named dates sls_order_dt but having int valuse => type casting to date naissairy 
+#issue there are colums having sls_order_dt = 0 / date in integer value 
+# check if the order_dt < ship_date < due date  
+##### correcting data form sls_sales , sls_price 
+    - if the sale make no sense calculate it form quantity and price 
+    - if the price make no sense calculate it from quantity and sales 
+    ( we thinked that the quality table is okay !!)
+    -### observed that there is also in isuue in the quantity table !!!!
+    => handling it with if not  sales=quantity *price (and if sales/price are null/0/neg)  then quantity = sales/price 
+### make transformation even if the data is okay ( if you make an update with new sources it handels it !)
+
+
+    finally 
+    - changing the ddl structue and inserting cleaned data 
