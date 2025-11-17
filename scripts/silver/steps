@@ -1,11 +1,13 @@
 1-analyse bronze tabels ( understand data , relationships ( key , foreing key ) 
 2- create exact same ddl tabes of bronze layer
 3- add meta data for easy maintenance
+___________________________________________________________________________________________________________________________________________
 _______________cleansing and transformation____cust_info___________________
 4-understand the quality issues of every table [ check duplicated or null  primary key |using sql quieries)#row_number
 5-cheking for unwanted spaces in string variabels 
 6- standarizing/normalizing  the data f-> female m ->male 
 7-adding derived colum ( upload date :dwh_creation_date)
+___________________________________________________________________________________________________________________________________________________________
 ________________________________________________prd_info_________________________
 1--understand the quality issues of every table [ check duplicated or null  primary key
 2-adding derived colum (cat_id and prd_key(form sls_details)  is a part from the prd_key)
@@ -19,3 +21,20 @@ ________________________________________________prd_info________________________
 6- cleaning data make no sense in prd_start_dt 00:00:00:00 type DATETIME => Date : casting 
 _____________________________________________________________________________________________
 ### if there is any added meta data / corrected time => you should change the ddl to store that values
+_____________________________________________________________________________________________________________________
+cleaning , transorming , loading data in silver.crm_sales_details 
+________________________________________________________________________________________
+1-normal stuff ( cheking unwanted spaces , if the foreing keys in the destination table , if there ay duplicates or nulls ) 
+#issue there are  colums named dates sls_order_dt but having int valuse => type casting to date naissairy 
+#issue there are colums having sls_order_dt = 0 / date in integer value 
+# check if the order_dt < ship_date < due date  
+##### correcting data form sls_sales , sls_price 
+    - if the sale make no sense calculate it form quantity and price 
+    - if the price make no sense calculate it from quantity and sales 
+    ( we thinked that the quality table is okay !!)
+    -### observed that there is also in isuue in the quantity table !!!!
+    => handling it with if not  sales=quantity *price (and if sales/price are null/0/neg)  then quantity = sales/price 
+### make transformation even if the data is okay ( if you make an update with new sources it handels it !)
+   
+finally 
+    - changing the ddl structue and inserting cleaned data 
