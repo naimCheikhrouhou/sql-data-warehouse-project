@@ -2,7 +2,20 @@
 2- create exact same ddl tabes of bronze layer
 3- add meta data for easy maintenance
 _______________cleansing and transformation____cust_info___________________
-4-understand the quality issues of every table [ check duplicated or null  primary key |using sql quieries)
+4-understand the quality issues of every table [ check duplicated or null  primary key |using sql quieries)#row_number
 5-cheking for unwanted spaces in string variabels 
 6- standarizing/normalizing  the data f-> female m ->male 
+7-adding derived colum ( upload date :dwh_creation_date)
 ________________________________________________prd_info_________________________
+1--understand the quality issues of every table [ check duplicated or null  primary key
+2-adding derived colum (cat_id and prd_key(form sls_details)  is a part from the prd_key)
+3-resolving the relation issue erp_cat(HR_KH) crm_prd_cat(HR-kH) -> you should make data homogenirous
+4-cheking for product with null or négative costs 
+5## checking the dates because they make no sense ! 
+{   -date_end<date_start ,
+    -|bad solution (inverce end and start date ) =>interction entre date_end and date_start not null (in 2010 prd_x cost 14 and 12 at the same time ) 
+}=> SOLUTION : delete end date and derived it from the start date so it didn't overlap #lead() => gives you the next row in the table ||lead(prd_start_dt)over(partition by prd_key ordred by prd_start_dt -1 AS prd_end
+
+6- cleaning data make no sense in prd_start_dt 00:00:00:00 type DATETIME => Date : casting 
+_____________________________________________________________________________________________
+### if there is any added meta data / corrected time => you should change the ddl to store that values
