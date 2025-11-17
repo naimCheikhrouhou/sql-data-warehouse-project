@@ -1,0 +1,87 @@
+__________________________________________________________________________________
+this is the clean ,transform ,load of the crm_cust_info    
+_______________________________________________________________________________
+
+
+--analyzing data issues for transformation 
+-- checking if there any duplicated key or null keys --
+SELECT cst_id , count(*)
+FROM bronze.crm_cust_info 
+GROUP BY cst_id 
+HAVING COUNT(*)>1 OR cst_id IS NULL ;
+------------- UNDERSTANDING THE ISSUE --------------------------------------------------------------------
+SELECT * From bronze.crm_cust_info WHERE cst_id=29466 ; 
+--------------solution------------------------------------------------
+SELECT *  FROM (
+SELECT * , ROW_NUMBER() OVER (PARTITION BY cst_id ORDER BY cst_create_date DESC ) AS flag_last 
+FROM bronze.crm_cust_info 
+)t WHERE flag_last = 1;                --add t before the ) to ssms know it is a table 
+---------cheking for unwanted spaces in string variabels 
+SELECT * FROM bronze.crm_cust_info 
+WHERE cst_firstname != TRIM(cst_firstname) OR cst_lastname != TRIM(cst_lastname) ;
+
+SELECT * FROM bronze.crm_cust_info 
+WHERE cst_marital_status != TRIM(cst_marital_status) OR cst_gndr != TRIM(cst_gndr) ;
+-------------SOLUTION -------------------------------------------------------
+SELECT 
+cst_id,
+cst_key,
+TRIM(cst_firstname) AS cst_firstname,
+TRIM(cst_lastname) AS cst_lastname ,
+CASE WHEN UPPER(TRIM(cst_marital_status))='M' THEN 'Maried' 
+	 WHEN UPPER(TRIM(cst_marital_status))='S' THEN 'Single' 
+ELSE 'n/a'
+END cst_marital_status,
+CASE WHEN UPPER(TRIM(cst_gndr))='M' THEN 'Male' 
+	 WHEN UPPER(TRIM(cst_gndr))='F' THEN 'female' 
+	 ELSE 'n/a'
+	END cst_gndr,
+	cst_create_date 
+	FROM (
+
+SELECT * , ROW_NUMBER() OVER (PARTITION BY cst_id ORDER BY cst_create_date DESC ) AS flag_last 
+FROM bronze.crm_cust_info
+where cst_id is not NULL 
+
+)t WHERE flag_last = 1 ;
+
+------------------ INSERTION INTO SILVER LAYER ------------------------------------------------------------
+
+insert into silver.crm_cust_info (cst_id ,cst_key , cst_firstname ,cst_lastname , cst_marital_status,cst_gndr , cst_create_date)
+
+SELECT 
+cst_id,
+cst_key,
+TRIM(cst_firstname) AS cst_firstname,
+TRIM(cst_lastname) AS cst_lastname ,
+CASE WHEN UPPER(TRIM(cst_marital_status))='M' THEN 'Maried' 
+	 WHEN UPPER(TRIM(cst_marital_status))='S' THEN 'Single' 
+ELSE 'n/a'
+END cst_marital_status,
+CASE WHEN UPPER(TRIM(cst_gndr))='M' THEN 'Male' 
+	 WHEN UPPER(TRIM(cst_gndr))='F' THEN 'female' 
+	 ELSE 'n/a'
+	END cst_gndr,
+	cst_create_date 
+	FROM (
+
+SELECT * , ROW_NUMBER() OVER (PARTITION BY cst_id ORDER BY cst_create_date DESC ) AS flag_last 
+FROM bronze.crm_cust_info
+where cst_id is not NULL 
+
+)t WHERE flag_last = 1 ;
+
+-------------check the silver layer ----------------------------------------------------------------------
+SELECT cst_id , count(*)
+FROM silver.crm_cust_info 
+GROUP BY cst_id 
+HAVING COUNT(*)>1 OR cst_id IS NULL ;
+----- chekin if there are any spaces 
+SELECT * FROM silver.crm_cust_info 
+WHERE cst_firstname != TRIM(cst_firstname) OR cst_lastname != TRIM(cst_lastname) ;
+
+SELECT * FROM silver.crm_cust_info 
+WHERE cst_marital_status != TRIM(cst_marital_status) OR cst_gndr != TRIM(cst_gndr) ;
+---------check for standarisation -------------------------------------------------
+select distinct cst_gndr 
+from silver.crm_cust_info; 
