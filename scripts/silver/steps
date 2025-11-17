@@ -1,5 +1,8 @@
 1-analyse bronze tabels ( understand data , relationships ( key , foreing key ) 
 2- create exact same ddl tabes of bronze layer
 3- add meta data for easy maintenance
-_______________cleansing and transformation
+_______________cleansing and transformation____cust_info___________________
 4-understand the quality issues of every table [ check duplicated or null  primary key |using sql quieries)
+5-cheking for unwanted spaces in string variabels 
+6- standarizing/normalizing  the data f-> female m ->male 
+________________________________________________prd_info_________________________
