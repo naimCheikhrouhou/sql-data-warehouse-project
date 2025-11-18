@@ -38,3 +38,31 @@ ________________________________________________________________________________
    
 finally 
     - changing the ddl structue and inserting cleaned data 
+_________________________________________________________________erp_cust_az12____________________________________________________
+analysing isuues => the table is related to crm_cust info     #the data should be matched 
+  ( condition : the two columes should have identical format => removing nas in the beggening 
+  ( condition : all foreing key exists in the parent table ) => veridict okay 
+2- checking (the birthdayte) if there are  future birth date 
+3-checking low cardinality ( distinct gendr = NULL / F /female /Male /m ) => we should correct that to  => ( Male , Female ,n/a)
+
+# there is no changment in the DDl  =>  inserting the data in the silver layer 
+
+________________________________________________________________erp_loc_a101________________________________________________________
+1- same isuue as erp_cust_az12 witch is  #not matching data in the colum cid wich relate the table with crp_cust_info (AW-number ) /crm( AWnumber ) 
+2-low cardinality => cheking possible values    ## bad quality data there are ( US ,usa , UNITED kindom , DE , GERMANY , null , "",)              ##normalizing the data
+3- we chandged anything in DDL so    # inserting the data to the silver layer
+
+______________________________________________________________erp_cat_g1v2________________________________________________________________
+checking unwandted spaces : okay 
+cheking id duplicates or nulls:okay 
+cheking data standarization: okay 
+# inserting the data 
+___________________________________________________________________________________
+# finally making a stored procedure with good printing message , time calulating , exception handling 
+
+
+
+
+
+
+
