@@ -3,5 +3,6 @@
     -cheking joining isuues ( duplicates or mismatch ) 
     -integrating data comming form multiple sources (crm.gndr /erp.gndr)
     -rename table colomu to friendly , meaningful names
-    -add a surrogate key to relate the tabels with a visible indentifier key 
+    -add a surrogate key to relate the tabels with a visible indentifier key
+     ####  to avoid duplicated id_key in historical data    ####
 finally  -save it into a view
