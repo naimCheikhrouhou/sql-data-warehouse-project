@@ -1,0 +1,7 @@
+1-construct costumer dimention : because it is has descriptive information about the object customer
+    -joining all costumer related tables 
+    -cheking joining isuues ( duplicates or mismatch ) 
+    -integrating data comming form multiple sources (crm.gndr /erp.gndr)
+    -rename table colomu to friendly , meaningful names
+    -add a surrogate key to relate the tabels with a visible indentifier key 
+finally  -save it into a view
