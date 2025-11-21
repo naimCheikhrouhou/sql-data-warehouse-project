@@ -3,6 +3,21 @@
     -cheking joining isuues ( duplicates or mismatch ) 
     -integrating data comming form multiple sources (crm.gndr /erp.gndr)
     -rename table colomu to friendly , meaningful names
-    -add a surrogate key to relate the tabels with a visible indentifier key
+    -add a surrogate key to relate dimentions with fat table 
      ####  to avoid duplicated id_key in historical data    ####
 finally  -save it into a view
+_______________________________________________________________________________________________
+2-construct product dimention ( historical data ) 
+    -in our projet we will only work on the lastes data ( we will not use the historical data ) 
+    -making a view for products having prd_end_dt = null ( current product version ) 
+    - joining product related tabels 
+    - giving colums a friendly name 
+finally - saving it into a view dim-products
+____________________________________________________________________________
+3- constructing the FACT TABLE(view )   the subject of analyzing containing ( keys,dates,measures)
+ -joining the fact tabel with dimention with the initial primary key of product and customer (prd_key ,cust_id) 
+ -replacing the (prd_key ,cust_id) with the surrogate keys of object (product , customer)
+ - give frendly names and ordering columes ( keys then dates then measures )
+ -fact_sales only taked the surrogate key form each dimention 
+ -save fact view into fact_sales
+________________________________________________________________________________________________
